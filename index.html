@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/main.css" />
+  <link rel="icon" href="./img/fav.png" type="image/gif" sizes="16x16">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <title>Book-shop</title>
+</head>
+
+<body onload="onInit()">
+  <section class="main-wrapper">
+    <h1 data-trans="title">Welcome to my bookshop</h1>
+    <button data-trans="create-new-book" onclick="onAddBook()" type="button" class="button">
+      create new book
+    </button>
+    <select class="custom-select set-lang" style="width:auto;" onchange="onSetLang(this.value)">
+      <option value="en">English</option>
+      <option value="he">עברית</option>
+    </select>
+    <section class="table-wrapper">
+      <table class="table main-table">
+        <thead class='header'>
+          <tr>
+            <th data-trans="id" scope="col">id</th>
+            <th scope="col">
+              <button data-trans="title-sort" class='small-btn' onclick='onSortByName()'>Title</<button>
+            </th>
+            <th scope="col">
+              <button data-trans="price-sort" class='small-btn' onclick='onSortByPrice()'>Price</button>
+            </th>
+            <th data-trans="action" scope="col">Action</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody class="body-table">
+        </tbody>
+      </table>
+      <section class="add-book" hidden>
+        <form>
+          <book-wrapper class="book-content">
+            <div>
+              <label data-trans="add-book-name">Book Name</label>
+              <input data-trans="add-book-name" type="text" name="title" class="gg" placeholder="Book name">
+            </div>
+            <div>
+              <label data-trans="add-book-price">Book price</label>
+              <input data-trans="add-book-price" type="text" name="price" class="gg" placeholder="Book price">
+            </div>
+            <button data-trans="add-book-button" onclick="onAddNewBook(event)" class="button">add book</button>
+            <button data-trans="add-book-close" onclick="onCloseNewBookModal(event)" class="small-btn">Close</button>
+          </book-wrapper>
+        </form>
+      </section>
+      <div class="pagination">
+        <a href="#" onclick="onNextPage(-1)">&laquo;</a>
+        <a onclick="onNextSpecificPage(0)" name="0" class='pageIdx active' href="#">1</a>
+        <a onclick="onNextSpecificPage(1)" name="1" class='pageIdx' href="#">2</a>
+        <a onclick="onNextSpecificPage(2)" name="2" class='pageIdx' href="#">3</a>
+        <a href="#" onclick="onNextPage(1)">&raquo;</a>
+      </div>
+    </section>
+  </section>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel">title</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          </button>
+        </div>
+        <div class="modal-body">
+          <img src="img_girl.jpg" alt="Girl in a jacket" width="100" height="100">
+          <h5>price</h5>
+          <label data-trans="read-book-rate">Rate:</label>
+          <div class="rate-wrapper">
+            <button onclick="onUpdateRate(-1)">-</button><span class="rate">rate</span>
+            <button onclick="onUpdateRate(1)">+</button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button data-trans="read-book-close" type="button" class="btn btn-secondary"
+            data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Updated Modal -->
+  <!-- Modal -->
+  <div class="modal fade modal-update" id="exampleModalCenter" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" data-trans="update-book-title" id="exampleModalLongTitle">please put the new price:
+          </h5>
+          <button type="button" class="close closeFloat" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input data-trans="update-book-input" class="form-control priceInput" type="text" placeholder="Price">
+        </div>
+        <div class="modal-footer">
+          <p class="price-updated"></p>
+          <button data-trans="update-book-close" type="button" class="btn btn-secondary"
+            data-dismiss="modal">Close</button>
+          <button data-trans="update-book-click" type="button" onclick="onUpdateBook()" class="btn btn-primary">Save
+            Price</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="./js/i18n-service.js"></script>
+  <script src="./js/utils-service.js"></script>
+  <script src="./js/storage-service.js"></script>
+  <script src="./js/book-service.js"></script>
+  <script src="./js/book-controller.js"></script>
+</body>
+
+</html>
